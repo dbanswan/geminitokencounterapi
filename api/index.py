@@ -20,7 +20,9 @@ cl100k_base = [
 p50k_base = ["Codex models", "text-davinci-002", "text-davinci-003", "gpt-2"]
 r50k_base = ["davinci", "curie", "babbage", "ada", "text-davinci-001"]
 app = Flask(__name__)
-CORS(app)
+# make sure we only access api from tokencounter.dbanswan.com
+CORS(app, resources={r"/api/*": {"origins": "https://tokencounter.dbanswan.com"}})
+# CORS(app)
 
 
 @app.route("/tokenize", methods=["GET"])
