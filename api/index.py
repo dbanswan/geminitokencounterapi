@@ -1,6 +1,7 @@
 from flask import Flask, request
 
-# import tiktoken
+import tiktoken
+
 # from sanic import Sanic
 # from sanic.response import json
 
@@ -14,44 +15,33 @@ cl100k_base = [
 ]
 p50k_base = ["Codex models", "text-davinci-002", "text-davinci-003"]
 r50k_base = ["davinci", "curie", "babbage", "ada", "text-davinci-001"]
-
-# app = Sanic("tokenize")
-
-
-# @app.route("/")
-# @app.route("/<path:path>")
-# async def index(request, path=""):
-#     return json({"hello": path})
+app = Flask(__name__)
 
 
-##nltk.download('punkt')
-# from nltk.tokenize import word_tokenize
+@app.route("/tokenize", methods=["GET"])
+def get_tokens():
+    return "Welcome to the tokenization API!"
 
 
-# @app.route("/tokenize", methods=["GET"])
-# def get_tokens():
-#     return "Welcome to the tokenization API!"
+@app.route("/tokenize", methods=["POST"])
+def count_tokens():
+    encoding = tiktoken.get_encoding("cl100k_base")
+    data = request.json
+    text = data["text"]
+    model = data["model"]
+    encoding = ""
+    if model in cl100k_base:
+        encoding = tiktoken.get_encoding("cl100k_base")
+    elif model in p50k_base:
+        encoding = tiktoken.get_encoding("p50k_base")
+    elif model in r50k_base:
+        encoding = tiktoken.get_encoding("r50k_base")
+    else:
+        return f"Model {model} not found in the list of models"
 
+    num_tokens = len(encoding.encode(text))
 
-# @app.route("/tokenize", methods=["POST"])
-# def count_tokens():
-#     encoding = tiktoken.get_encoding("cl100k_base")
-#     data = request.json
-#     text = data["text"]
-#     model = data["model"]
-#     encoding = ""
-#     if model in cl100k_base:
-#         encoding = tiktoken.get_encoding("cl100k_base")
-#     elif model in p50k_base:
-#         encoding = tiktoken.get_encoding("p50k_base")
-#     elif model in r50k_base:
-#         encoding = tiktoken.get_encoding("r50k_base")
-#     else:
-#         return f"Model {model} not found in the list of models"
-
-#     num_tokens = len(encoding.encode(text))
-
-#     return f"The number of tokens in the text is: {num_tokens}"
+    return f"{num_tokens}"
 
 
 # if __name__ == "__main__":
@@ -62,8 +52,6 @@ r50k_base = ["davinci", "curie", "babbage", "ada", "text-davinci-001"]
 
 
 # from flask import Flask
-
-app = Flask(__name__)
 
 
 @app.route("/")
