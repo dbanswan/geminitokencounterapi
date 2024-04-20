@@ -48,7 +48,7 @@ CORS(
         }
     },
 )
-CORS(app)
+# CORS(app)
 
 
 @app.route("/tokenize", methods=["GET"])
