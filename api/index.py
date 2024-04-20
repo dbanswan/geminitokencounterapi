@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 
+load_dotenv()
+
 google_api_key = os.getenv("API_KEY")
 # print(google_api_key)
 genai.configure(api_key=google_api_key)
@@ -56,51 +58,52 @@ def get_tokens():
 
 @app.route("/tokenize", methods=["POST"])
 def count_tokens():
+    try:
 
-    encoding = tiktoken.get_encoding("cl100k_base")
-    num_tokens = 0
-    data = request.json
-    text = data["text"]
-    model = data["model"]
-    encoding = ""
-    if model in gemini_models:
-        # google_api_key = os.getenv("API_KEY")
-        # print(google_api_key)
-        # genai.configure(api_key=google_api_key)
-        model = "models/" + model
-        gemini_model = genai.GenerativeModel(model)
-        num_tokens = gemini_model.count_tokens(text).total_tokens
-        # print(type(num_tokens))
-
-        # num_tokens = num_tokens.split("total_tokens: ")[1]
-        print(num_tokens)
-
-    elif model in cl100k_base:
         encoding = tiktoken.get_encoding("cl100k_base")
-        num_tokens = len(encoding.encode(text))
+        num_tokens = 0
+        data = request.json
+        text = data["text"]
+        model = data["model"]
+        encoding = ""
+        if model in gemini_models:
+            # google_api_key = os.getenv("API_KEY")
+            # print(google_api_key)
+            # genai.configure(api_key=google_api_key)
+            model = "models/" + model
+            gemini_model = genai.GenerativeModel(model)
+            num_tokens = gemini_model.count_tokens(text).total_tokens
+            # print(type(num_tokens))
 
-    elif model in p50k_base:
-        encoding = tiktoken.get_encoding("p50k_base")
-        num_tokens = len(encoding.encode(text))
-    elif model in r50k_base:
-        encoding = tiktoken.get_encoding("r50k_base")
-        num_tokens = len(encoding.encode(text))
-    else:
-        # send a 404 error with object {"error": true, "message": "Model not found in the list of models"} convert to json
-        return {
-            "error": True,
-            "message": "Model not found in the list of models",
-            "data": -1,
-        }
+            # num_tokens = num_tokens.split("total_tokens: ")[1]
+            print(num_tokens)
 
-    return {"error": False, "message": "Token count successful", "data": num_tokens}
+        elif model in cl100k_base:
+            encoding = tiktoken.get_encoding("cl100k_base")
+            num_tokens = len(encoding.encode(text))
+
+        elif model in p50k_base:
+            encoding = tiktoken.get_encoding("p50k_base")
+            num_tokens = len(encoding.encode(text))
+        elif model in r50k_base:
+            encoding = tiktoken.get_encoding("r50k_base")
+            num_tokens = len(encoding.encode(text))
+        else:
+            # send a 404 error with object {"error": true, "message": "Model not found in the list of models"} convert to json
+            return {
+                "error": True,
+                "message": "Model not found in the list of models",
+                "data": -1,
+            }
+
+        return {"error": False, "message": "Token count successful", "data": num_tokens}
+    except:
+        return {"error": True, "message": "Error counting tokens", "data": -1}
 
 
 if __name__ == "__main__":
     # app.run(debug=True)
     from waitress import serve
-
-    load_dotenv()
 
     # for m in genai.list_models():
     #     if "generateContent" in m.supported_generation_methods:
