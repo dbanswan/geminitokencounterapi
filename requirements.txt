@@ -3,3 +3,4 @@ Flask_Cors==4.0.0
 python-dotenv==1.0.1
 waitress==3.0.0
 google-generativeai==0.5.2
+tiktoken==0.3.3
