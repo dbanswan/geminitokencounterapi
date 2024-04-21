@@ -44,7 +44,11 @@ CORS(
     app,
     resources={
         r"/*": {
-            "origins": ["https://tokencounter.dbanswan.com", "http://localhost:3000"],
+            "origins": [
+                "https://tokencounter.dbanswan.com",
+                "https://geminitokencounter.dbanswan.com/",
+                "http://localhost:3000",
+            ],
             "methods": ["GET", "POST"],
         }
     },
