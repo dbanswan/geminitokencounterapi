@@ -46,7 +46,7 @@ CORS(
         r"/*": {
             "origins": [
                 "https://tokencounter.dbanswan.com",
-                "https://geminitokencounter.dbanswan.com/",
+                "https://geminitokencounter.dbanswan.com",
                 "http://localhost:3000",
             ],
             "methods": ["GET", "POST"],
