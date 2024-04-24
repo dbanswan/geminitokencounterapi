@@ -31,6 +31,8 @@ gemini_models = [
 
 Counter is exposed through post request on /tokenize endpoint. We need to send json payload to the endpoint e.g http://127.0.0.1:5000/tokenize as:
 
+<img src="https://raw.githubusercontent.com/dbanswan/geminitokencounterapi/main/request.png" alt="token counter api request"/>
+
 ```json
 { "text": "count tokens in this prompt", "model": "gemini-1.0-pro" }
 ```
