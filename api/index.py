@@ -91,7 +91,7 @@ def count_tokens():
         # print(gemini_models)
         for models in gemini_models:
             if models["model_name"] == model:
-                print(f" token count method {models["token_count_method"]}")
+
                 if models["token_count_method"] == "countTokens":
                     gemini_model = genai.GenerativeModel(model)
                     num_tokens = gemini_model.count_tokens(text).total_tokens
