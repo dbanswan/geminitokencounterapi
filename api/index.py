@@ -46,7 +46,7 @@ def get_tokens():
 
 @app.route("/listmodels", methods=["GET"])
 @cache.cached(timeout=72000)
-def listmodels(m=1):
+def listmodels():
     try:
         models = genai.list_models()
         allmodels = []
